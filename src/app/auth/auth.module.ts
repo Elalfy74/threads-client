@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
-import { RegisterComponent } from './components/register/register.component';
-import { LoginComponent } from './components/login/login.component';
 import { RouterModule } from '@angular/router';
-import { AuthService } from './auth.service';
 import { FormsModule } from '@angular/forms';
 
+import { AuthService } from './auth.service';
+import { AuthComponent } from './auth.component';
+
 @NgModule({
-  declarations: [RegisterComponent, LoginComponent],
+  declarations: [AuthComponent],
   providers: [AuthService],
   imports: [RouterModule, FormsModule],
 })

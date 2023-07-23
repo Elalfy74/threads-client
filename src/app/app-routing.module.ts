@@ -2,26 +2,19 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { ThreadsPageComponent } from './threads/components/threads-page/threads-page.component';
-import { RegisterComponent } from './auth/components/register/register.component';
-import { LoginComponent } from './auth/components/login/login.component';
+import { authGuard } from './auth/auth.guard';
+import { AuthComponent } from './auth/auth.component';
 
 const routes: Routes = [
   {
     path: '',
     component: ThreadsPageComponent,
+    canActivate: [authGuard()],
   },
+
   {
     path: 'auth',
-    children: [
-      {
-        path: 'register',
-        component: RegisterComponent,
-      },
-      {
-        path: 'login',
-        component: LoginComponent,
-      },
-    ],
+    component: AuthComponent,
   },
 ];
 
