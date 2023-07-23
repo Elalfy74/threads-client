@@ -1,7 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import * as moment from 'moment';
 
-moment.locale('en', {
+moment.updateLocale('en', {
   relativeTime: {
     future: 'in %s',
     past: '%s',
