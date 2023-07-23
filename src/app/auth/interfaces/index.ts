@@ -1,2 +1,2 @@
-export * from './auth.dto';
-export * from './user.dto';
+export * from './auth.interface';
+export * from './user.interface';

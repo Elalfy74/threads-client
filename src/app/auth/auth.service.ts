@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { tap } from 'rxjs/operators';
-import { BehaviorSubject } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
+import { BehaviorSubject, throwError } from 'rxjs';
 
-import { UserDto, AuthDto } from './interfaces';
+import { CurrentUser, AuthDto } from './interfaces';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  user = new BehaviorSubject<UserDto | null>(null);
+  currentUser = new BehaviorSubject<CurrentUser | null>(null);
   private url = 'http://localhost:3000/auth';
 
   constructor(
@@ -17,8 +17,8 @@ export class AuthService {
   ) {}
 
   register(dto: AuthDto) {
-    return this.http.post<UserDto>(`${this.url}/register`, dto).pipe(
-      // catchError(this.handleError),
+    return this.http.post<CurrentUser>(`${this.url}/register`, dto).pipe(
+      catchError(this.handleError),
       tap((resData) => {
         this.handleAuthentication(resData);
       }),
@@ -26,8 +26,8 @@ export class AuthService {
   }
 
   login(dto: AuthDto) {
-    return this.http.post<UserDto>(`${this.url}/login`, dto).pipe(
-      // catchError(this.handleError),
+    return this.http.post<CurrentUser>(`${this.url}/login`, dto).pipe(
+      catchError(this.handleError),
       tap((resData) => {
         this.handleAuthentication(resData);
       }),
@@ -38,19 +38,24 @@ export class AuthService {
     const savedData = localStorage.getItem('userData');
     if (!savedData) return;
 
-    const userData: UserDto = JSON.parse(savedData);
+    const userData: CurrentUser = JSON.parse(savedData);
 
-    this.user.next(userData);
+    this.currentUser.next(userData);
   }
 
   logout() {
-    this.user.next(null);
+    this.currentUser.next(null);
     localStorage.removeItem('userData');
     this.router.navigate(['/auth']);
   }
 
-  private handleAuthentication(userData: UserDto) {
-    this.user.next(userData);
+  private handleAuthentication(userData: CurrentUser) {
+    this.currentUser.next(userData);
     localStorage.setItem('userData', JSON.stringify(userData));
+  }
+
+  private handleError(error: HttpErrorResponse) {
+    const newErr = new Error(error.error.message || 'Something went wrong!');
+    return throwError(() => newErr);
   }
 }

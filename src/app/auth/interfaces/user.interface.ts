@@ -1,4 +1,4 @@
-export interface UserDto {
+export interface CurrentUser {
   accessToken: string;
   user: {
     id: string;

@@ -8,6 +8,11 @@ import { AuthComponent } from './auth/auth.component';
 const routes: Routes = [
   {
     path: '',
+    redirectTo: 'home',
+    pathMatch: 'full',
+  },
+  {
+    path: 'home',
     component: ThreadsPageComponent,
     canActivate: [authGuard()],
   },
