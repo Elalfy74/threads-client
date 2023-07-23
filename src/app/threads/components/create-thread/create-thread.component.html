@@ -1,0 +1,47 @@
+<div class="flex gap-4 px-4">
+  <div class="flex flex-col">
+    <img
+      src="https://api.uifaces.co/our-content/donated/xZ4wg2Xj.jpg"
+      alt="author-logo"
+      class="rounded-full w-9 h-9 max-w-none"
+    />
+    <div class="h-full w-0.5 bg-zinc-700 self-center mt-2"></div>
+  </div>
+  <div class="flex-1 pr-3">
+    <h5 class="font-semibold">elalfy74</h5>
+    <span
+      class="block py-2 mt-2 max-w-full overflow-hidden leading-5 break-all focus:outline-none empty:before:content-['Start_a_thread...'] empty:before:text-zinc-600"
+      role="textbox"
+      contenteditable
+      (input)="onInput($event)"
+      [textContent]="content"
+    >
+    </span>
+    <div class="flex items-center justify-between">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="w-5 h-5"
+        viewBox="0 0 24 24"
+        stroke-width="1.5"
+        stroke="#616161"
+        fill="none"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+        <path
+          d="M15 7l-6.5 6.5a1.5 1.5 0 0 0 3 3l6.5 -6.5a3 3 0 0 0 -6 -6l-6.5 6.5a4.5 4.5 0 0 0 9 9l6.5 -6.5"
+        />
+      </svg>
+
+      <button
+        [disabled]="!content"
+        class="text-lg font-bold text-blue-500 disabled:text-gray-500 disabled:cursor-not-allowed"
+        (click)="onAddThread()"
+      >
+        Post
+      </button>
+    </div>
+  </div>
+</div>
+<hr class="h-px my-8 border-0 bg-zinc-700" />
