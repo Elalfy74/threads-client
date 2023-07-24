@@ -5,7 +5,6 @@ import { ThreadsListComponent } from './components/threads-list/threads-list.com
 import { ThreadItemComponent } from './components/thread-item/thread-item.component';
 import { ThreadsService } from './threads.service';
 import { SharedModule } from '../shared/shared.module';
-import { ThreadActionsComponent } from './components/thread-item/thread-actions/thread-actions.component';
 import { CreateThreadComponent } from './components/create-thread/create-thread.component';
 import { ThreadsPageComponent } from './components/threads-page/threads-page.component';
 
@@ -13,7 +12,6 @@ import { ThreadsPageComponent } from './components/threads-page/threads-page.com
   declarations: [
     ThreadsListComponent,
     ThreadItemComponent,
-    ThreadActionsComponent,
     CreateThreadComponent,
     ThreadsPageComponent,
   ],

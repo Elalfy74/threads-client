@@ -1,5 +1,8 @@
 <ul>
   <li *ngFor="let thread of threads">
-    <app-thread-item [thread]="thread"></app-thread-item>
+    <app-thread-item
+      [thread]="thread"
+      (handleLike)="handleLike($event)"
+    ></app-thread-item>
   </li>
 </ul>

@@ -19,7 +19,7 @@ const routes: Routes = [
       {
         path: 'home',
         component: ThreadsPageComponent,
-        canActivate: [authGuard()],
+        // canActivate: [authGuard()],
       },
     ],
   },

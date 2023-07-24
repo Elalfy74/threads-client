@@ -39,14 +39,23 @@ export class AuthService {
     if (!savedData) return;
 
     const userData: CurrentUser = JSON.parse(savedData);
-
     this.currentUser.next(userData);
+
+    this.checkAuth().subscribe({
+      error: () => {
+        this.logout();
+      },
+    });
   }
 
   logout() {
     this.currentUser.next(null);
     localStorage.removeItem('userData');
     this.router.navigate(['/auth']);
+  }
+
+  private checkAuth() {
+    return this.http.get(`${this.url}/checkauth`);
   }
 
   private handleAuthentication(userData: CurrentUser) {

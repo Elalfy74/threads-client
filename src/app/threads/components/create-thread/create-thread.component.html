@@ -10,8 +10,9 @@
   <div class="flex-1 pr-3">
     <h5 class="font-semibold">{{ username }}</h5>
     <span
-      class="block py-2 mt-2 max-w-full overflow-hidden leading-5 break-all focus:outline-none empty:before:content-['Start_a_thread...'] empty:before:text-zinc-600"
+      class="block py-2 cursor-text mt-2 max-w-full overflow-hidden leading-5 break-all focus:outline-none empty:before:content-['Start_a_thread...'] empty:before:text-zinc-600"
       role="textbox"
+      autofocus
       contenteditable
       (input)="onInput($event)"
       [textContent]="content"
