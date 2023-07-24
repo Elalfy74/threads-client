@@ -7,9 +7,12 @@ import { ThreadsModule } from './threads/threads.module';
 import { AuthModule } from './auth/auth.module';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthInterceptor } from './auth/auth.interceptor';
+import { UrlInterceptor } from './shared/url.interceptor';
+import { LayoutComponent } from './layout/layout.component';
+import { AsideNavComponent } from './layout/aside-nav/aside-nav.component';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, LayoutComponent, AsideNavComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -18,6 +21,11 @@ import { AuthInterceptor } from './auth/auth.interceptor';
     HttpClientModule,
   ],
   providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: UrlInterceptor,
+      multi: true,
+    },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

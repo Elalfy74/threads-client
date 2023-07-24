@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { ThreadsPageComponent } from './threads/components/threads-page/threads-page.component';
 import { authGuard } from './auth/auth.guard';
 import { AuthComponent } from './auth/auth.component';
+import { LayoutComponent } from './layout/layout.component';
 
 const routes: Routes = [
   {
@@ -12,9 +13,15 @@ const routes: Routes = [
     pathMatch: 'full',
   },
   {
-    path: 'home',
-    component: ThreadsPageComponent,
-    canActivate: [authGuard()],
+    path: '',
+    component: LayoutComponent,
+    children: [
+      {
+        path: 'home',
+        component: ThreadsPageComponent,
+        canActivate: [authGuard()],
+      },
+    ],
   },
 
   {

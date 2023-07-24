@@ -13,7 +13,7 @@ export class ThreadsService {
   ) {}
 
   threads = new Subject<Thread[]>();
-  private url = 'http://localhost:3000/api/posts';
+  private url = 'posts';
 
   getThreads() {
     return this.http.get<Thread[]>(`${this.url}`).subscribe((resData) => {

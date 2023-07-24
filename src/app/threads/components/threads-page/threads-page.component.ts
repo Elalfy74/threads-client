@@ -12,6 +12,7 @@ export class ThreadsPageComponent implements OnInit, OnDestroy {
   currentUserSub?: Subscription;
 
   constructor(private authService: AuthService) {}
+
   ngOnInit(): void {
     this.currentUserSub = this.authService.currentUser.subscribe((user) => {
       this.currentUser = user?.user || null;
