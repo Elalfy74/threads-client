@@ -1,4 +1,4 @@
-import { Component, ElementRef } from '@angular/core';
+import { Component, ElementRef, Input } from '@angular/core';
 import { ThreadsService } from '../../threads.service';
 
 @Component({
@@ -6,16 +6,36 @@ import { ThreadsService } from '../../threads.service';
   templateUrl: './create-thread.component.html',
 })
 export class CreateThreadComponent {
-  constructor(private threadsService: ThreadsService) {}
+  @Input() username!: string;
+  @Input() avatar!: string;
 
   content = '';
+  previewImg = '';
+  imgFile?: File;
+
+  constructor(private threadsService: ThreadsService) {}
 
   onAddThread() {
-    this.threadsService.addThread(this.content);
-    this.content = '';
+    this.threadsService
+      .addThread({
+        content: this.content,
+        imgFile: this.imgFile,
+      })
+      .subscribe(() => {
+        this.content = '';
+        this.imgFile = undefined;
+        this.previewImg = '';
+      });
   }
 
   onInput(e: Event) {
     this.content = (e.target as HTMLInputElement).textContent!;
+  }
+
+  onAddFile(ele?: any) {
+    if (ele && ele.files) {
+      this.imgFile = ele.files[0];
+      this.previewImg = URL.createObjectURL(ele.files[0]);
+    }
   }
 }

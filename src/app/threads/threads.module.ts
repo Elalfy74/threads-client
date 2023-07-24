@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+
 import { ThreadsListComponent } from './components/threads-list/threads-list.component';
 import { ThreadItemComponent } from './components/thread-item/thread-item.component';
 import { ThreadsService } from './threads.service';

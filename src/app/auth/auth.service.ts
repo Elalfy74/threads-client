@@ -9,7 +9,7 @@ import { CurrentUser, AuthDto } from './interfaces';
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   currentUser = new BehaviorSubject<CurrentUser | null>(null);
-  private url = 'http://localhost:3000/auth';
+  private url = 'http://localhost:3000/api/auth';
 
   constructor(
     private http: HttpClient,
