@@ -22,6 +22,7 @@ export class AuthComponent {
 
   toggleView() {
     this.isLogin = !this.isLogin;
+    this.error = undefined;
   }
 
   onSubmit(form: NgForm) {
