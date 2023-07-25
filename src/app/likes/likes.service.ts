@@ -8,6 +8,7 @@ import { ThreadsService } from '../threads/threads.service';
 })
 export class LikesService {
   private readonly url = 'likes';
+
   constructor(
     private http: HttpClient,
     private threadsService: ThreadsService,

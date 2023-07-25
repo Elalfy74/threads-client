@@ -7,13 +7,13 @@ import { AuthService } from '../auth/auth.service';
 
 @Injectable()
 export class ThreadsService {
+  threads = new Subject<Thread[]>();
+  private url = 'posts';
+
   constructor(
     private http: HttpClient,
     private authService: AuthService,
   ) {}
-
-  threads = new Subject<Thread[]>();
-  private url = 'posts';
 
   getThreads() {
     return this.http.get<Thread[]>(`${this.url}`).subscribe((resData) => {
@@ -29,28 +29,29 @@ export class ThreadsService {
       formData.append('file', dto.imgFile);
     }
 
+    let resData: CreatedThread;
+
     return this.http.post<CreatedThread>(`${this.url}`, formData).pipe(
-      exhaustMap((resData) => {
-        return this.authService.currentUser.pipe(
-          take(1),
+      exhaustMap((res) => {
+        resData = res;
+        return this.authService.currentUser;
+      }),
+      take(1),
+      tap((user) => {
+        if (!user) return;
 
-          tap((user) => {
-            if (!user) return;
-
-            const newThread = new Thread(
-              resData.id,
-              resData.content,
-              resData.createdAt,
-              resData.imageUrl,
-              {
-                username: user?.user.username,
-                avatar: user.user.avatar,
-              },
-            );
-
-            this.threads.next([newThread]);
-          }),
+        const newThread = new Thread(
+          resData.id,
+          resData.content,
+          resData.createdAt,
+          resData.imageUrl,
+          {
+            username: user?.user.username,
+            avatar: user.user.avatar,
+          },
         );
+
+        this.threads.next([newThread]);
       }),
     );
   }

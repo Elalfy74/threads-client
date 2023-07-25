@@ -11,14 +11,14 @@ import { AuthDto, CurrentUser } from './interfaces';
   templateUrl: './auth.component.html',
 })
 export class AuthComponent {
+  isLogin = true;
+  isLoading = false;
+  error?: string;
+
   constructor(
     private authService: AuthService,
     private router: Router,
   ) {}
-
-  isLogin = false;
-  isLoading = false;
-  error?: string;
 
   toggleView() {
     this.isLogin = !this.isLogin;

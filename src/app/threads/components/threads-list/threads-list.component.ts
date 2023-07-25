@@ -25,15 +25,15 @@ export class ThreadsListComponent implements OnInit, OnDestroy {
     });
   }
 
+  ngOnDestroy(): void {
+    this.threadsSub?.unsubscribe();
+  }
+
   handleLike({ id, userHasLiked }: Thread) {
     if (!userHasLiked) {
       this.likesService.create(id);
     } else {
       this.likesService.remove(id);
     }
-  }
-
-  ngOnDestroy(): void {
-    this.threadsSub?.unsubscribe();
   }
 }

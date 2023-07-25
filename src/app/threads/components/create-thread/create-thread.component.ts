@@ -1,7 +1,5 @@
-import { Component, ElementRef, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ThreadsService } from '../../threads.service';
-import { AuthService } from 'src/app/auth/auth.service';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-create-thread',
@@ -17,6 +15,17 @@ export class CreateThreadComponent {
 
   constructor(private threadsService: ThreadsService) {}
 
+  onInput(e: Event) {
+    this.content = (e.target as HTMLInputElement).textContent!;
+  }
+
+  onAddFile(ele?: any) {
+    if (ele && ele.files) {
+      this.imgFile = ele.files[0];
+      this.previewImg = URL.createObjectURL(ele.files[0]);
+    }
+  }
+
   onAddThread() {
     this.threadsService
       .addThread({
@@ -28,16 +37,5 @@ export class CreateThreadComponent {
         this.imgFile = undefined;
         this.previewImg = '';
       });
-  }
-
-  onInput(e: Event) {
-    this.content = (e.target as HTMLInputElement).textContent!;
-  }
-
-  onAddFile(ele?: any) {
-    if (ele && ele.files) {
-      this.imgFile = ele.files[0];
-      this.previewImg = URL.createObjectURL(ele.files[0]);
-    }
   }
 }
