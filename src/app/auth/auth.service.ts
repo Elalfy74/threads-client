@@ -51,7 +51,7 @@ export class AuthService {
   logout() {
     this.currentUser.next(null);
     localStorage.removeItem('userData');
-    this.router.navigate(['/auth']);
+    this.router.navigate(['/']);
   }
 
   private checkAuth() {

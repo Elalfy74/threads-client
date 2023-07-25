@@ -18,10 +18,10 @@ export class ThreadsListComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.threadsService.getThreads();
+    this.threadsService.find();
 
     this.threadsSub = this.threadsService.threads.subscribe((resData) => {
-      this.threads = [...resData, ...this.threads];
+      this.threads = resData;
     });
   }
 

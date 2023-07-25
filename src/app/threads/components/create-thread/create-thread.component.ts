@@ -28,7 +28,7 @@ export class CreateThreadComponent {
 
   onAddThread() {
     this.threadsService
-      .addThread({
+      .create({
         content: this.content,
         imgFile: this.imgFile,
       })

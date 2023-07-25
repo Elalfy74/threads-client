@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 
 import { HttpClient } from '@angular/common/http';
 import { CreateThreadDto, CreatedThread, Thread } from './interfaces';
-import { Subject, exhaustMap, take, tap } from 'rxjs';
+import { BehaviorSubject, exhaustMap, map, take, tap } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
 
 @Injectable()
 export class ThreadsService {
-  threads = new Subject<Thread[]>();
+  threads = new BehaviorSubject<Thread[]>([]);
   private url = 'posts';
 
   constructor(
@@ -15,13 +15,13 @@ export class ThreadsService {
     private authService: AuthService,
   ) {}
 
-  getThreads() {
+  find() {
     return this.http.get<Thread[]>(`${this.url}`).subscribe((resData) => {
       this.threads.next(resData);
     });
   }
 
-  addThread(dto: CreateThreadDto) {
+  create(dto: CreateThreadDto) {
     const formData = new FormData();
     formData.append('content', dto.content);
 
@@ -29,29 +29,34 @@ export class ThreadsService {
       formData.append('file', dto.imgFile);
     }
 
-    let resData: CreatedThread;
-
     return this.http.post<CreatedThread>(`${this.url}`, formData).pipe(
-      exhaustMap((res) => {
-        resData = res;
-        return this.authService.currentUser;
-      }),
-      take(1),
-      tap((user) => {
-        if (!user) return;
+      exhaustMap((resData) => {
+        return this.authService.currentUser.pipe(
+          (take(1),
+          map((user) => {
+            if (!user) return;
 
-        const newThread = new Thread(
-          resData.id,
-          resData.content,
-          resData.createdAt,
-          resData.imageUrl,
-          {
-            username: user?.user.username,
-            avatar: user.user.avatar,
-          },
+            return new Thread(
+              resData.id,
+              resData.content,
+              resData.createdAt,
+              resData.imageUrl,
+              {
+                username: user?.user.username,
+                avatar: user.user.avatar,
+              },
+            );
+          })),
         );
+      }),
 
-        this.threads.next([newThread]);
+      exhaustMap((newThread) => {
+        return this.threads.pipe(
+          take(1),
+          tap((oldThreads) => {
+            this.threads.next([newThread!, ...oldThreads]);
+          }),
+        );
       }),
     );
   }

@@ -26,7 +26,6 @@
           class="w-7 h-7 stroke-gray-400"
           viewBox="0 0 24 24"
           stroke-width="2"
-          fill="none"
           stroke-linecap="round"
           stroke-linejoin="round"
         >
@@ -100,10 +99,10 @@
       </a>
 
       <button
-        (click)="onLogout()"
+        (click)="isAuth ? onLogout() : onLogin()"
         class="w-full py-3 mt-10 font-bold tracking-wide text-black uppercase duration-300 bg-white border-none rounded-full hover:bg-opacity-80 text-md"
       >
-        Logout
+        {{ isAuth ? "Logout" : "Sign in" }}
       </button>
     </nav>
   </div>
