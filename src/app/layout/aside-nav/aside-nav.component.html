@@ -1,8 +1,8 @@
 <aside
-  class="sticky top-0 left-0 flex flex-col h-screen px-12 py-8 overflow-y-auto border-r border-zinc-700"
+  class="sticky top-0 left-0 flex flex-col items-center h-screen px-1 py-8 overflow-y-auto border-r sm:px-4 md:px-8 md:items-start lg:px-12 border-zinc-700"
 >
   <svg
-    class="w-10 h-10 mb-2"
+    class="w-8 h-8 mb-2 md:w-10 md:h-10"
     fill="#FFFFFF"
     aria-label="Threads"
     viewBox="0 0 192 192"
@@ -14,8 +14,8 @@
     ></path>
   </svg>
 
-  <div class="flex flex-col justify-between flex-1 mt-6">
-    <nav>
+  <div class="flex flex-col justify-between w-full mt-6">
+    <nav class="text-center">
       <a
         class="flex items-center px-4 py-2 text-gray-200 transition-all duration-300 transform rounded-lg hover:bg-gray-800 hover:bg-opacity-70 hover:text-gray-200"
         routerLink="/home"
@@ -35,7 +35,7 @@
           <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
         </svg>
 
-        <span class="mx-4 text-lg font-medium">Home</span>
+        <span class="hidden mx-4 text-lg font-medium md:block">Home</span>
       </a>
 
       <a
@@ -57,7 +57,7 @@
           <path d="M21 21l-6 -6" />
         </svg>
 
-        <span class="mx-4 text-lg font-medium">Search</span>
+        <span class="hidden mx-4 text-lg font-medium md:block">Search</span>
       </a>
 
       <a
@@ -82,7 +82,7 @@
           <path d="M12 9l0 6" />
         </svg>
 
-        <span class="mx-4 text-lg font-medium">Create</span>
+        <span class="hidden mx-4 text-lg font-medium md:block">Create</span>
       </a>
 
       <a
@@ -95,14 +95,30 @@
           class="object-cover rounded-full w-7 h-7"
         />
 
-        <span class="mx-4 text-lg font-medium">Profile</span>
+        <span class="hidden mx-4 text-lg font-medium md:block">Profile</span>
       </a>
 
       <button
         (click)="isAuth ? onLogout() : onLogin()"
-        class="w-full py-3 mt-10 font-bold tracking-wide text-black uppercase duration-300 bg-white border-none rounded-full hover:bg-opacity-80 text-md"
+        class="p-2 mt-10 font-bold tracking-wide text-black uppercase duration-300 bg-white border-none rounded-full md:w-full md:py-3 hover:bg-opacity-80 text-md"
       >
-        {{ isAuth ? "Logout" : "Sign in" }}
+        <span class="hidden md:block">{{ isAuth ? "Logout" : "Sign in" }}</span>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="block md:hidden w-7 h-7"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="#2c3e50"
+          fill="none"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+          <path
+            d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2"
+          />
+          <path d="M20 12h-13l3 -3m0 6l-3 -3" />
+        </svg>
       </button>
     </nav>
   </div>

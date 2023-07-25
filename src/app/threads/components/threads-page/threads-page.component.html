@@ -1,4 +1,4 @@
-<main class="container max-w-2xl pt-10">
+<main class="container max-w-2xl px-2 pt-5 md:pt-10 lg:px-0">
   <app-create-thread
     *ngIf="currentUser"
     [avatar]="currentUser.avatar"
@@ -6,5 +6,5 @@
   >
   </app-create-thread>
 
-  <app-threads-list></app-threads-list>
+  <app-threads-list [currentUser]="currentUser"></app-threads-list>
 </main>

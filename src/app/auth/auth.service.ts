@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { catchError, tap } from 'rxjs/operators';
 import { BehaviorSubject, throwError } from 'rxjs';
+import { catchError, take, tap } from 'rxjs/operators';
 
 import { CurrentUser, AuthDto } from './interfaces';
 
@@ -61,6 +61,15 @@ export class AuthService {
   private handleAuthentication(userData: CurrentUser) {
     this.currentUser.next(userData);
     localStorage.setItem('userData', JSON.stringify(userData));
+  }
+
+  updateToken(token: string) {
+    this.currentUser.pipe(take(1)).subscribe((user) => {
+      if (!user) return;
+
+      const newCurrentUser = { ...user, accessToken: token };
+      this.handleAuthentication(newCurrentUser);
+    });
   }
 
   private handleError(error: HttpErrorResponse) {

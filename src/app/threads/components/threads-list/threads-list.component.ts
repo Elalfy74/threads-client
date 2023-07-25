@@ -1,14 +1,23 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
 import { ThreadsService } from '../../threads.service';
 import { Subscription } from 'rxjs';
 import { Thread } from '../../interfaces';
 import { LikesService } from 'src/app/likes/likes.service';
+import { CurrentUser } from 'src/app/auth/interfaces';
 
 @Component({
   selector: 'app-threads-list',
   templateUrl: './threads-list.component.html',
 })
-export class ThreadsListComponent implements OnInit, OnDestroy {
+export class ThreadsListComponent implements OnInit, OnDestroy, OnChanges {
+  @Input() currentUser!: CurrentUser['user'] | null;
   threads: Thread[] = [];
   threadsSub?: Subscription;
 
@@ -18,8 +27,6 @@ export class ThreadsListComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.threadsService.find();
-
     this.threadsSub = this.threadsService.threads.subscribe((resData) => {
       this.threads = resData;
     });
@@ -27,6 +34,10 @@ export class ThreadsListComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.threadsSub?.unsubscribe();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    this.threadsService.find();
   }
 
   handleLike({ id, userHasLiked }: Thread) {
