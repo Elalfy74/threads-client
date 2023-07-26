@@ -12,6 +12,7 @@ export class CreateThreadComponent {
   content = '';
   previewImg = '';
   imgFile?: File;
+  fileExceedError?: boolean;
 
   constructor(private threadsService: ThreadsService) {}
 
@@ -20,7 +21,17 @@ export class CreateThreadComponent {
   }
 
   onAddFile(ele?: any) {
+    this.fileExceedError = false;
+
     if (ele && ele.files) {
+      const { size }: File = ele.files[0];
+
+      // 2MB
+      if (size > 2097152) {
+        this.fileExceedError = true;
+        return;
+      }
+
       this.imgFile = ele.files[0];
       this.previewImg = URL.createObjectURL(ele.files[0]);
     }

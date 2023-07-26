@@ -39,6 +39,7 @@
           type="file"
           id="upload"
           style="display: none"
+          accept="image/png, image/gif, image/jpeg"
           (input)="onAddFile($event.target)"
         />
         <img
@@ -47,6 +48,9 @@
           alt="previewImg"
           class="object-cover w-20 h-20 mt-2"
         />
+        <p *ngIf="fileExceedError" class="text-red-500">
+          File uploaded is too big. Max size is 2 MB
+        </p>
       </label>
 
       <button
