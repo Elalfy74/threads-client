@@ -1,3 +1,56 @@
+<app-modal
+  class="fixed top-0 left-0 flex justify-center w-full mt-32"
+  [isVisible]="isModalVisible"
+  (close)="isModalVisible = false"
+>
+  <div class="flex justify-between">
+    <div class="flex gap-4 overflow-hidden">
+      <div class="flex flex-col">
+        <img
+          [src]="thread.user.avatar"
+          alt="author-logo"
+          class="w-10 h-10 rounded-full max-w-none"
+        />
+        <div class="h-full w-0.5 bg-zinc-700 self-center mt-2"></div>
+      </div>
+      <div>
+        <h4 class="font-bold">{{ thread.user.username }}</h4>
+        <p class="mb-2">{{ thread.content }}</p>
+        <p class="truncate" *ngIf="thread.imageUrl">{{ thread.imageUrl }}</p>
+
+        <p class="my-2 text-zinc-500">
+          Replying to
+          <a class="text-blue-400 cursor-pointer"
+            >@{{ thread.user.username }}</a
+          >
+        </p>
+      </div>
+    </div>
+    <p class="text-zinc-500">{{ thread.createdAt | timeAgo }}</p>
+  </div>
+  <div class="flex flex-col mt-3">
+    <div class="flex gap-4">
+      <img
+        [src]="thread.user.avatar"
+        alt="author-logo"
+        class="w-10 h-10 rounded-full max-w-none"
+      />
+
+      <span
+        class="block py-2 h-25 cursor-text mt-2 max-w-full overflow-hidden leading-5 break-all focus:outline-none empty:before:content-['Reply!'] empty:before:text-zinc-600"
+        role="textbox"
+        autofocus
+        contenteditable
+      ></span>
+    </div>
+    <button
+      class="self-end px-3 py-1 mt-3 font-semibold text-black bg-white rounded-full"
+    >
+      Reply
+    </button>
+  </div>
+</app-modal>
+
 <div class="flex justify-between">
   <div class="flex gap-4">
     <div class="flex flex-col">
@@ -15,7 +68,7 @@
         *ngIf="thread.imageUrl"
         [src]="thread.imageUrl"
         alt="img"
-        class="rounded"
+        class="rounded max-h-96"
       />
       <!-- Thread Actions -->
       <div class="flex gap-5 mt-3">
@@ -45,21 +98,27 @@
           </svg>
         </button>
         <!-- Comment -->
-        <svg
-          class="p-1 w-9 h-9"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          stroke-width="1.5"
-          stroke="#FFFFFF"
-          fill="none"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+        <button
+          (click)="isModalVisible = true"
+          [disabled]="!isAuth"
+          class="duration-200 rounded-full hover:bg-blue-500 disabled:hover:bg-transparent hover:bg-opacity-10"
         >
-          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-          <path
-            d="M3 20l1.3 -3.9c-2.324 -3.437 -1.426 -7.872 2.1 -10.374c3.526 -2.501 8.59 -2.296 11.845 .48c3.255 2.777 3.695 7.266 1.029 10.501c-2.666 3.235 -7.615 4.215 -11.574 2.293l-4.7 1"
-          />
-        </svg>
+          <svg
+            class="p-1 w-9 h-9"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="#FFFFFF"
+            fill="none"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path
+              d="M3 20l1.3 -3.9c-2.324 -3.437 -1.426 -7.872 2.1 -10.374c3.526 -2.501 8.59 -2.296 11.845 .48c3.255 2.777 3.695 7.266 1.029 10.501c-2.666 3.235 -7.615 4.215 -11.574 2.293l-4.7 1"
+            />
+          </svg>
+        </button>
       </div>
       <!-- End Thread Actions -->
     </div>

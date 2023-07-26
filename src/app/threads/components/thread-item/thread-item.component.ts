@@ -20,6 +20,7 @@ export class ThreadItemComponent implements OnInit, OnDestroy {
 
   isAuth = false;
   currentUserSub?: Subscription;
+  isModalVisible: boolean = false;
 
   constructor(private authService: AuthService) {}
 
