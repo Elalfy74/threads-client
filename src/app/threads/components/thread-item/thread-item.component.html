@@ -1,55 +1,8 @@
-<app-modal
-  class="fixed top-0 left-0 flex justify-center w-full mt-32"
+<app-reply-modal
   [isVisible]="isModalVisible"
+  [thread]="thread"
   (close)="isModalVisible = false"
->
-  <div class="flex justify-between">
-    <div class="flex gap-4 overflow-hidden">
-      <div class="flex flex-col">
-        <img
-          [src]="thread.user.avatar"
-          alt="author-logo"
-          class="w-10 h-10 rounded-full max-w-none"
-        />
-        <div class="h-full w-0.5 bg-zinc-700 self-center mt-2"></div>
-      </div>
-      <div>
-        <h4 class="font-bold">{{ thread.user.username }}</h4>
-        <p class="mb-2">{{ thread.content }}</p>
-        <p class="truncate" *ngIf="thread.imageUrl">{{ thread.imageUrl }}</p>
-
-        <p class="my-2 text-zinc-500">
-          Replying to
-          <a class="text-blue-400 cursor-pointer"
-            >@{{ thread.user.username }}</a
-          >
-        </p>
-      </div>
-    </div>
-    <p class="text-zinc-500">{{ thread.createdAt | timeAgo }}</p>
-  </div>
-  <div class="flex flex-col mt-3">
-    <div class="flex gap-4">
-      <img
-        [src]="thread.user.avatar"
-        alt="author-logo"
-        class="w-10 h-10 rounded-full max-w-none"
-      />
-
-      <span
-        class="block py-2 h-25 cursor-text mt-2 max-w-full overflow-hidden leading-5 break-all focus:outline-none empty:before:content-['Reply!'] empty:before:text-zinc-600"
-        role="textbox"
-        autofocus
-        contenteditable
-      ></span>
-    </div>
-    <button
-      class="self-end px-3 py-1 mt-3 font-semibold text-black bg-white rounded-full"
-    >
-      Reply
-    </button>
-  </div>
-</app-modal>
+></app-reply-modal>
 
 <div class="flex justify-between">
   <div class="flex gap-4">
@@ -121,6 +74,11 @@
         </button>
       </div>
       <!-- End Thread Actions -->
+      <p class="mt-1 ml-1 text-sm text-zinc-600">
+        {{ thread.likesCount }} {{ thread.likesCount > 1 ? "likes" : "like" }}
+        {{ thread.repliesCount }}
+        {{ thread.repliesCount > 1 ? "replies" : "reply" }}
+      </p>
     </div>
   </div>
   <p class="text-zinc-500">{{ thread.createdAt | timeAgo }}</p>

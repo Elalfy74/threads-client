@@ -6,9 +6,10 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { Thread } from '../../interfaces';
-import { AuthService } from 'src/app/auth/auth.service';
 import { Subscription } from 'rxjs';
+
+import { AuthService } from 'src/app/auth/auth.service';
+import { Thread } from '../../interfaces';
 
 @Component({
   selector: 'app-thread-item',

@@ -7,6 +7,7 @@ import { ThreadsService } from './threads.service';
 import { SharedModule } from '../shared/shared.module';
 import { CreateThreadComponent } from './components/create-thread/create-thread.component';
 import { ThreadsPageComponent } from './components/threads-page/threads-page.component';
+import { ReplyModalComponent } from '../replies/reply-modal/reply-modal.component';
 
 @NgModule({
   declarations: [
@@ -14,8 +15,10 @@ import { ThreadsPageComponent } from './components/threads-page/threads-page.com
     ThreadItemComponent,
     CreateThreadComponent,
     ThreadsPageComponent,
+    ReplyModalComponent,
   ],
   providers: [ThreadsService],
+
   imports: [CommonModule, SharedModule],
 })
 export class ThreadsModule {}
