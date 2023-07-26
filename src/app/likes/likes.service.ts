@@ -18,24 +18,33 @@ export class LikesService {
   create(threadId: string) {
     return this.http
       .post(`${this.url}`, { postId: threadId })
-      .pipe(exhaustMap(() => this.revalidateThreads(threadId)))
+      .pipe(exhaustMap(() => this.revalidateThreads(threadId, 'increase')))
       .subscribe();
   }
 
   remove(threadId: string) {
     return this.http
       .delete(`${this.url}/${threadId}`)
-      .pipe(exhaustMap(() => this.revalidateThreads(threadId)))
+      .pipe(exhaustMap(() => this.revalidateThreads(threadId, 'decrease')))
       .subscribe();
   }
 
-  private revalidateThreads(threadId: string) {
+  private revalidateThreads(threadId: string, status: 'increase' | 'decrease') {
     return this.threadsService.threads.pipe(
       take(1),
       tap((oldThreads) => {
         const newThreads = oldThreads.map((thread) => {
           if (thread.id === threadId) {
-            return { ...thread, userHasLiked: !thread.userHasLiked };
+            const newLikesCount =
+              status === 'increase'
+                ? thread.likesCount + 1
+                : thread.likesCount - 1;
+
+            return {
+              ...thread,
+              userHasLiked: !thread.userHasLiked,
+              likesCount: newLikesCount,
+            };
           }
           return thread;
         });
