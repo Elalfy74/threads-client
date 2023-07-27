@@ -4,6 +4,7 @@ import { BehaviorSubject, exhaustMap, map, take, tap } from 'rxjs';
 
 import { AuthService } from '../auth/auth.service';
 import { CreateThreadDto, NewThread, Thread } from './interfaces';
+import { NewReply } from '../replies/interfaces';
 
 @Injectable({ providedIn: 'root' })
 export class ThreadsService {
@@ -66,4 +67,76 @@ export class ThreadsService {
       }),
     );
   }
+
+  localModify(data: ActionData) {
+    return this.threads.pipe(
+      take(1),
+      tap((oldThreads) => {
+        let newThreads: Thread[];
+
+        switch (data.action) {
+          case Actions.LIKE_CREATED:
+          case Actions.LIKE_REMOVED:
+            newThreads = this.localModifyLike(data, oldThreads);
+            break;
+          case Actions.REPLY_CREATED:
+            newThreads = this.localModifyReply(data, oldThreads);
+            break;
+          default:
+            return null;
+        }
+        this.threads.next(newThreads);
+
+        if (data.action === Actions.REPLY_CREATED) {
+          return data.payload.reply;
+        }
+        return null;
+      }),
+    );
+  }
+  private localModifyLike(data: ActionData, oldThreads: Thread[]) {
+    return oldThreads.map((thread) => {
+      if (thread.id === data.payload.threadId) {
+        const newLikesCount =
+          data.action === Actions.LIKE_CREATED
+            ? thread.likesCount + 1
+            : thread.likesCount - 1;
+
+        return {
+          ...thread,
+          userHasLiked: !thread.userHasLiked,
+          likesCount: newLikesCount,
+        };
+      }
+      return thread;
+    });
+  }
+
+  private localModifyReply(data: ActionData, oldThreads: Thread[]) {
+    return oldThreads.map((thread) => {
+      if (thread.id === data.payload.threadId) {
+        return { ...thread, repliesCount: thread.repliesCount + 1 };
+      }
+      return thread;
+    });
+  }
 }
+
+export enum Actions {
+  LIKE_CREATED = 'LIKE_CREATED',
+  LIKE_REMOVED = 'LIKE_REMOVED',
+  REPLY_CREATED = 'REPLY_CREATED',
+}
+
+type ActionData =
+  | {
+      action: Actions.LIKE_CREATED | Actions.LIKE_REMOVED;
+      payload: { threadId: string };
+    }
+  | {
+      action: Actions.REPLY_CREATED;
+      payload: {
+        threadId: string;
+        reply: NewReply;
+      };
+    };

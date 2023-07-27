@@ -21,7 +21,7 @@
     </div>
     <div>
       <h4 class="font-bold">{{ thread.user.username }}</h4>
-      <p class="mb-2">{{ thread.content }}</p>
+      <p class="mb-2 break-all">{{ thread.content }}</p>
       <img
         *ngIf="thread.imageUrl"
         [src]="thread.imageUrl"

@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { exhaustMap, map, take } from 'rxjs';
+import { exhaustMap } from 'rxjs';
 
-import { ThreadsService } from '../threads/threads.service';
+import { Actions, ThreadsService } from '../threads/threads.service';
 import { NewReply } from './interfaces';
 
 @Injectable({
@@ -19,28 +19,20 @@ export class RepliesService {
   create(threadId: string, content: string) {
     return this.http
       .post<NewReply>(`${this.url}`, { postId: threadId, content })
-      .pipe(exhaustMap((reply) => this.revalidateThreads(threadId, reply)));
+      .pipe(
+        exhaustMap((reply) =>
+          this.threadsService.localModify({
+            action: Actions.REPLY_CREATED,
+            payload: {
+              threadId,
+              reply,
+            },
+          }),
+        ),
+      );
   }
 
   find(threadId: string) {
     return this.http.get(`${this.url}/${threadId}`);
-  }
-
-  private revalidateThreads(threadId: string, reply: NewReply) {
-    return this.threadsService.threads.pipe(
-      take(1),
-
-      map((oldThreads) => {
-        const newThreads = oldThreads.map((thread) => {
-          if (thread.id === threadId) {
-            return { ...thread, repliesCount: thread.repliesCount + 1 };
-          }
-          return thread;
-        });
-
-        this.threadsService.threads.next(newThreads);
-        return reply;
-      }),
-    );
   }
 }
