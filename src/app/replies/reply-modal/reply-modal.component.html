@@ -41,12 +41,17 @@
         role="textbox"
         autofocus
         contenteditable
+        (input)="onInput($event)"
+        [textContent]="content"
       ></span>
     </div>
     <button
-      class="self-end px-3 py-1 mt-3 font-semibold text-black bg-white rounded-full"
+      (click)="onReply()"
+      [disabled]="!content || isLoading"
+      class="flex items-center self-end justify-center px-3 py-1 mt-3 font-semibold text-black bg-white rounded-full disabled:text-gray-400 disabled:bg-slate-700"
     >
-      Reply
+      <span *ngIf="!isLoading">Reply</span>
+      <app-spinner *ngIf="isLoading" color="black"></app-spinner>
     </button>
   </div>
 </app-modal>

@@ -5,6 +5,8 @@ import { ThreadsPageComponent } from './threads/components/threads-page/threads-
 import { authGuard } from './auth/auth.guard';
 import { AuthComponent } from './auth/auth.component';
 import { LayoutComponent } from './layout/layout.component';
+import { ThreadDetailsPageComponent } from './threads/components/thread-details-page/thread-details-page.component';
+import { threadResolver } from './threads/thread.resolver';
 
 const routes: Routes = [
   {
@@ -20,6 +22,11 @@ const routes: Routes = [
         path: 'home',
         component: ThreadsPageComponent,
         // canActivate: [authGuard()],
+      },
+      {
+        path: 'threads/:threadId',
+        component: ThreadDetailsPageComponent,
+        resolve: { thread: threadResolver },
       },
     ],
   },

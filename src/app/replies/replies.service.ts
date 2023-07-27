@@ -7,7 +7,7 @@ import { ThreadsService } from '../threads/threads.service';
 @Injectable({
   providedIn: 'root',
 })
-export class LikesService {
+export class RepliesService {
   private readonly url = 'replies';
 
   constructor(
@@ -18,8 +18,7 @@ export class LikesService {
   create(threadId: string, content: string) {
     return this.http
       .post(`${this.url}`, { postId: threadId, content })
-      .pipe(exhaustMap(() => this.revalidateThreads(threadId)))
-      .subscribe();
+      .pipe(exhaustMap(() => this.revalidateThreads(threadId)));
   }
 
   find(threadId: string) {
@@ -32,7 +31,7 @@ export class LikesService {
       tap((oldThreads) => {
         const newThreads = oldThreads.map((thread) => {
           if (thread.id === threadId) {
-            return { ...thread, commentsCount: thread.repliesCount + 1 };
+            return { ...thread, repliesCount: thread.repliesCount + 1 };
           }
           return thread;
         });

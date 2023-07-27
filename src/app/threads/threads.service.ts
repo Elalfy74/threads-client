@@ -16,9 +16,15 @@ export class ThreadsService {
   ) {}
 
   find() {
-    return this.http.get<Thread[]>(`${this.url}`).subscribe((resData) => {
-      this.threads.next(resData);
-    });
+    return this.http.get<Thread[]>(`${this.url}`).pipe(
+      tap((resData) => {
+        this.threads.next(resData);
+      }),
+    );
+  }
+
+  findOne(threadId: string) {
+    return this.http.get<Thread>(`${this.url}/${threadId}`);
   }
 
   create(dto: CreateThreadDto) {

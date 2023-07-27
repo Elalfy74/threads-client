@@ -1,43 +1,36 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnDestroy,
-  OnInit,
-  Output,
-} from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
-import { AuthService } from 'src/app/auth/auth.service';
 import { Thread } from '../../interfaces';
+import { ThreadWithReplies } from '../../interfaces/thread-with-replies.interface';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-thread-item',
   templateUrl: './thread-item.component.html',
 })
-export class ThreadItemComponent implements OnInit, OnDestroy {
-  @Input() thread!: Thread;
+export class ThreadItemComponent {
+  @Input() thread!: Thread | ThreadWithReplies;
   @Output() handleLike = new EventEmitter();
+  @Input() isAuth = false;
 
-  isAuth = false;
-  currentUserSub?: Subscription;
   isModalVisible: boolean = false;
 
-  constructor(private authService: AuthService) {}
+  constructor(private router: Router) {}
 
-  ngOnInit(): void {
-    this.currentUserSub = this.authService.currentUser.subscribe((user) => {
-      this.isAuth = !!user;
-    });
-  }
+  onLike(e: Event) {
+    e.stopPropagation();
 
-  ngOnDestroy(): void {
-    this.currentUserSub?.unsubscribe();
-  }
-
-  onLike() {
     if (!this.isAuth) return;
-
     this.handleLike.emit(this.thread);
+  }
+
+  onThreadClick() {
+    this.router.navigate(['threads', this.thread.id]);
+  }
+
+  onShowModal(e: Event) {
+    e.stopPropagation();
+
+    this.isModalVisible = true;
   }
 }

@@ -1,0 +1,7 @@
+<div>
+  <app-thread-item
+    [thread]="thread"
+    (handleLike)="handleLike()"
+    [isAuth]="!!currentUser"
+  ></app-thread-item>
+</div>
