@@ -1,12 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { ThreadsPageComponent } from './threads/components/threads-page/threads-page.component';
 import { authGuard } from './auth/auth.guard';
-import { AuthComponent } from './auth/auth.component';
-import { LayoutComponent } from './layout/layout.component';
-import { ThreadDetailsPageComponent } from './threads/components/thread-details-page/thread-details-page.component';
 import { threadResolver } from './threads/thread.resolver';
+
+import { LayoutComponent } from './layout/layout.component';
+import { ThreadsPageComponent } from './threads/components/threads-page/threads-page.component';
+import { AuthComponent } from './auth/auth.component';
+import { ThreadDetailsPageComponent } from './threads/components/thread-details-page/thread-details-page.component';
 
 const routes: Routes = [
   {

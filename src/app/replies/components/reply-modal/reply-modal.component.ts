@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
-import { Thread } from 'src/app/threads/interfaces';
 import { RepliesService } from '../../replies.service';
+import { Thread } from 'src/app/threads/interfaces';
 
 @Component({
   selector: 'app-reply-modal',
@@ -18,10 +18,6 @@ export class ReplyModalComponent {
 
   constructor(private repliesService: RepliesService) {}
 
-  onClose() {
-    this.close.emit();
-  }
-
   onInput(e: Event) {
     this.content = (e.target as HTMLInputElement).textContent!;
   }
@@ -36,7 +32,7 @@ export class ReplyModalComponent {
         this.isLoading = false;
 
         this.onReplySuccess.emit(replyRes);
-        this.onClose();
+        this.close.emit();
       });
   }
 }

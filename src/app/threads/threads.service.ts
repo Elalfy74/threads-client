@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-
 import { HttpClient } from '@angular/common/http';
-import { CreateThreadDto, CreatedThread, Thread } from './interfaces';
 import { BehaviorSubject, exhaustMap, map, take, tap } from 'rxjs';
-import { AuthService } from '../auth/auth.service';
 
-@Injectable()
+import { AuthService } from '../auth/auth.service';
+import { CreateThreadDto, NewThread, Thread } from './interfaces';
+
+@Injectable({ providedIn: 'root' })
 export class ThreadsService {
   threads = new BehaviorSubject<Thread[]>([]);
   private url = 'posts';
@@ -35,7 +35,7 @@ export class ThreadsService {
       formData.append('file', dto.imgFile);
     }
 
-    return this.http.post<CreatedThread>(`${this.url}`, formData).pipe(
+    return this.http.post<NewThread>(`${this.url}`, formData).pipe(
       exhaustMap((resData) => {
         return this.authService.currentUser.pipe(
           (take(1),

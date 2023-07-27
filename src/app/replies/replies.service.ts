@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { exhaustMap, map, take, tap } from 'rxjs';
+import { exhaustMap, map, take } from 'rxjs';
 
 import { ThreadsService } from '../threads/threads.service';
 import { NewReply } from './interfaces';

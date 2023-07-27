@@ -63,8 +63,4 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 export class ModalComponent {
   @Input() isVisible!: boolean;
   @Output() close = new EventEmitter();
-
-  onClose() {
-    this.close.emit();
-  }
 }

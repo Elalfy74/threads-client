@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { Observable } from 'rxjs';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 import { AuthService } from './auth.service';
 import { AuthDto, CurrentUser } from './interfaces';
@@ -11,7 +11,7 @@ import { AuthDto, CurrentUser } from './interfaces';
   templateUrl: './auth.component.html',
 })
 export class AuthComponent {
-  isLogin = true;
+  isLoginView = true;
   isLoading = false;
   error?: string;
 
@@ -21,7 +21,7 @@ export class AuthComponent {
   ) {}
 
   toggleView() {
-    this.isLogin = !this.isLogin;
+    this.isLoginView = !this.isLoginView;
     this.error = undefined;
   }
 
@@ -30,13 +30,12 @@ export class AuthComponent {
       return;
     }
 
+    this.isLoading = true;
     const dto: AuthDto = form.value;
 
     let authObs: Observable<CurrentUser>;
 
-    this.isLoading = true;
-
-    if (this.isLogin) {
+    if (this.isLoginView) {
       authObs = this.authService.login(dto);
     } else {
       authObs = this.authService.register(dto);

@@ -1,8 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-
-import { Thread } from '../../interfaces';
-import { ThreadWithReplies } from '../../interfaces/thread-with-replies.interface';
 import { Router } from '@angular/router';
+
+import { Thread, ThreadWithReplies } from '../../interfaces';
 
 @Component({
   selector: 'app-thread-item',
@@ -34,7 +33,6 @@ export class ThreadItemComponent {
 
   onShowModal(e: Event) {
     e.stopPropagation();
-
     this.isModalVisible = true;
   }
 }

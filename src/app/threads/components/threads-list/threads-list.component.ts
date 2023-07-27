@@ -6,11 +6,13 @@ import {
   OnInit,
   SimpleChanges,
 } from '@angular/core';
-import { ThreadsService } from '../../threads.service';
 import { Subscription } from 'rxjs';
-import { Thread } from '../../interfaces';
+
 import { LikesService } from 'src/app/likes/likes.service';
 import { CurrentUser } from 'src/app/auth/interfaces';
+
+import { ThreadsService } from '../../threads.service';
+import { Thread } from '../../interfaces';
 
 @Component({
   selector: 'app-threads-list',

@@ -1,4 +1,4 @@
-export interface CreatedThread {
+export interface NewThread {
   id: string;
   content: string;
   createdAt: Date;

@@ -1,6 +1,6 @@
 <div
   *ngIf="isVisible"
-  (click)="onClose()"
+  (click)="close.emit()"
   class="fixed top-0 left-0 z-10 w-screen h-full bg-gray-600 bg-opacity-80"
 ></div>
 <div
@@ -12,7 +12,7 @@
   aria-modal="true"
 >
   <div class="pb-2">
-    <button (click)="onClose()">
+    <button (click)="close.emit()">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         class="p-2 duration-300 rounded-full w-9 h-9 hover:bg-opacity-50 hover:bg-slate-800"

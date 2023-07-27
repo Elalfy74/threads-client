@@ -1,7 +1,7 @@
 <app-modal
   class="fixed top-0 left-0 flex justify-center w-full mt-32"
   [isVisible]="isVisible"
-  (close)="onClose()"
+  (close)="close.emit()"
 >
   <div class="flex justify-between">
     <div class="flex gap-4 overflow-hidden">

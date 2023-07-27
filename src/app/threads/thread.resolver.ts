@@ -1,10 +1,11 @@
 import { inject } from '@angular/core';
-import { ThreadsService } from './threads.service';
 import {
   ResolveFn,
   ActivatedRouteSnapshot,
   RouterStateSnapshot,
 } from '@angular/router';
+
+import { ThreadsService } from './threads.service';
 import { Thread } from './interfaces';
 
 export const threadResolver: ResolveFn<Thread> = (
