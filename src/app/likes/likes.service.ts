@@ -18,15 +18,13 @@ export class LikesService {
   create(threadId: string) {
     return this.http
       .post(`${this.url}`, { postId: threadId })
-      .pipe(exhaustMap(() => this.revalidateThreads(threadId, 'increase')))
-      .subscribe();
+      .pipe(exhaustMap(() => this.revalidateThreads(threadId, 'increase')));
   }
 
   remove(threadId: string) {
     return this.http
       .delete(`${this.url}/${threadId}`)
-      .pipe(exhaustMap(() => this.revalidateThreads(threadId, 'decrease')))
-      .subscribe();
+      .pipe(exhaustMap(() => this.revalidateThreads(threadId, 'decrease')));
   }
 
   private revalidateThreads(threadId: string, status: 'increase' | 'decrease') {

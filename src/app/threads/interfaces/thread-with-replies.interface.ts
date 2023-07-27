@@ -1,4 +1,4 @@
-import { Reply } from 'src/app/replies/reply.interface';
+import { Reply } from 'src/app/replies/interfaces';
 import { Thread } from './thread.interface';
 
 export interface ThreadWithReplies extends Thread {

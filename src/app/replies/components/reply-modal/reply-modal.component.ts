@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
-import { RepliesService } from '../replies.service';
 import { Thread } from 'src/app/threads/interfaces';
+import { RepliesService } from '../../replies.service';
 
 @Component({
   selector: 'app-reply-modal',
@@ -11,6 +11,7 @@ export class ReplyModalComponent {
   @Input() isVisible!: boolean;
   @Input() thread!: Thread;
   @Output() close = new EventEmitter();
+  @Output() onReplySuccess = new EventEmitter();
 
   content = '';
   isLoading = false;
@@ -28,13 +29,14 @@ export class ReplyModalComponent {
   onReply() {
     this.isLoading = true;
 
-    this.repliesService.create(this.thread.id, this.content).subscribe(() => {
-      this.content = '';
-      this.isLoading = false;
+    this.repliesService
+      .create(this.thread.id, this.content)
+      .subscribe((replyRes) => {
+        this.content = '';
+        this.isLoading = false;
 
-      setTimeout(() => {
+        this.onReplySuccess.emit(replyRes);
         this.onClose();
-      }, 500);
-    });
+      });
   }
 }

@@ -10,8 +10,10 @@ import { Router } from '@angular/router';
 })
 export class ThreadItemComponent {
   @Input() thread!: Thread | ThreadWithReplies;
-  @Output() handleLike = new EventEmitter();
   @Input() isAuth = false;
+  @Input() shouldNavigate = false;
+  @Output() handleLike = new EventEmitter();
+  @Output() onReplySuccess = new EventEmitter();
 
   isModalVisible: boolean = false;
 
@@ -25,7 +27,9 @@ export class ThreadItemComponent {
   }
 
   onThreadClick() {
-    this.router.navigate(['threads', this.thread.id]);
+    if (this.shouldNavigate) {
+      this.router.navigate(['threads', this.thread.id]);
+    }
   }
 
   onShowModal(e: Event) {

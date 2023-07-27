@@ -1,7 +1,8 @@
-<div>
-  <app-thread-item
-    [thread]="thread"
-    (handleLike)="handleLike()"
-    [isAuth]="!!currentUser"
-  ></app-thread-item>
-</div>
+<app-thread-item
+  [thread]="thread"
+  (handleLike)="handleLike()"
+  [isAuth]="!!currentUser"
+  (onReplySuccess)="onReplySuccess($event)"
+></app-thread-item>
+
+<app-replies-list [replies]="thread.replies"></app-replies-list>

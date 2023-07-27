@@ -2,9 +2,14 @@
   [isVisible]="isModalVisible"
   [thread]="thread"
   (close)="isModalVisible = false"
+  (onReplySuccess)="onReplySuccess.emit($event)"
 ></app-reply-modal>
 
-<div class="flex justify-between cursor-pointer" (click)="onThreadClick()">
+<div
+  class="flex justify-between"
+  (click)="onThreadClick()"
+  [ngClass]="{ 'cursor-pointer': shouldNavigate }"
+>
   <div class="flex gap-4">
     <div class="flex flex-col">
       <img

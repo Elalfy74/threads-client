@@ -11,7 +11,6 @@ import { Subscription } from 'rxjs';
 import { Thread } from '../../interfaces';
 import { LikesService } from 'src/app/likes/likes.service';
 import { CurrentUser } from 'src/app/auth/interfaces';
-import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-threads-list',
@@ -25,7 +24,6 @@ export class ThreadsListComponent implements OnInit, OnDestroy, OnChanges {
 
   constructor(
     private threadsService: ThreadsService,
-    private authService: AuthService,
     private likesService: LikesService,
   ) {}
 
@@ -52,9 +50,9 @@ export class ThreadsListComponent implements OnInit, OnDestroy, OnChanges {
 
   handleLike({ id, userHasLiked }: Thread) {
     if (!userHasLiked) {
-      this.likesService.create(id);
+      this.likesService.create(id).subscribe();
     } else {
-      this.likesService.remove(id);
+      this.likesService.remove(id).subscribe();
     }
   }
 }
