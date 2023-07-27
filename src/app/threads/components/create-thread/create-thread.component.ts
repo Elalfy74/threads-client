@@ -13,6 +13,7 @@ export class CreateThreadComponent {
   previewImg = '';
   imgFile?: File;
   fileExceedError?: boolean;
+  isLoading = false;
 
   constructor(private threadsService: ThreadsService) {}
 
@@ -38,6 +39,8 @@ export class CreateThreadComponent {
   }
 
   onAddThread() {
+    this.isLoading = true;
+
     this.threadsService
       .create({
         content: this.content,
@@ -47,6 +50,7 @@ export class CreateThreadComponent {
         this.content = '';
         this.imgFile = undefined;
         this.previewImg = '';
+        this.isLoading = false;
       });
   }
 }

@@ -11,6 +11,7 @@ import { Subscription } from 'rxjs';
 import { Thread } from '../../interfaces';
 import { LikesService } from 'src/app/likes/likes.service';
 import { CurrentUser } from 'src/app/auth/interfaces';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-threads-list',
@@ -20,13 +21,20 @@ export class ThreadsListComponent implements OnInit, OnDestroy, OnChanges {
   @Input() currentUser!: CurrentUser['user'] | null;
   threads: Thread[] = [];
   threadsSub?: Subscription;
+  isLoading = false;
 
   constructor(
     private threadsService: ThreadsService,
+    private authService: AuthService,
     private likesService: LikesService,
   ) {}
 
   ngOnInit(): void {
+    this.isLoading = true;
+    this.threadsService.find().subscribe(() => {
+      this.isLoading = false;
+    });
+
     this.threadsSub = this.threadsService.threads.subscribe((resData) => {
       this.threads = resData;
     });
@@ -37,7 +45,9 @@ export class ThreadsListComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.threadsService.find();
+    if (this.threads.length > 0) {
+      this.threadsService.find().subscribe(() => {});
+    }
   }
 
   handleLike({ id, userHasLiked }: Thread) {

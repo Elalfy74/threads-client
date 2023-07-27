@@ -1,8 +1,12 @@
-<ul>
+<div *ngIf="isLoading" class="mt-20 text-center">
+  <app-spinner color="white" size="normal"></app-spinner>
+</div>
+<ul *ngIf="!isLoading">
   <li *ngFor="let thread of threads">
     <app-thread-item
       [thread]="thread"
       (handleLike)="handleLike($event)"
+      [isAuth]="!!currentUser"
     ></app-thread-item>
   </li>
 </ul>
