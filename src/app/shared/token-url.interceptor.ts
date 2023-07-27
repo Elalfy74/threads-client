@@ -17,26 +17,18 @@ export class TokenAndUrlInterceptor implements HttpInterceptor {
     req: HttpRequest<any>,
     next: HttpHandler,
   ): Observable<HttpEvent<any>> {
-    let modifiedReq;
-
     return this.authService.currentUser.pipe(
       take(1),
       exhaustMap((user) => {
-        if (!user) {
-          modifiedReq = req.clone({
-            url: `http://localhost:3000/api/${req.url}`,
-            withCredentials: true,
-          });
-        } else {
-          modifiedReq = req.clone({
-            url: `http://localhost:3000/api/${req.url}`,
-            headers: req.headers.append(
-              'Authorization',
-              `Bearer ${user.accessToken}`,
-            ),
-            withCredentials: true,
-          });
-        }
+        const modifiedReq = req.clone({
+          url: `http://localhost:3000/api/${req.url}`,
+          withCredentials: true,
+          headers: req.headers.append(
+            'Authorization',
+            `Bearer ${user?.accessToken}`,
+          ),
+        });
+
         return next.handle(modifiedReq);
       }),
     );

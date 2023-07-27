@@ -1,10 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { LikesService } from 'src/app/likes/likes.service';
 import { ActivatedRoute } from '@angular/router';
-import { ThreadWithReplies } from '../../interfaces/thread-with-replies.interface';
 import { Subscription } from 'rxjs';
+
 import { CurrentUser } from 'src/app/auth/interfaces';
+import { LikesService } from 'src/app/likes/likes.service';
 import { AuthService } from 'src/app/auth/auth.service';
+
+import { ThreadWithReplies } from '../../interfaces/thread-with-replies.interface';
 import { NewReply } from 'src/app/replies/interfaces';
 
 @Component({

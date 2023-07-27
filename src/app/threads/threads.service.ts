@@ -94,6 +94,7 @@ export class ThreadsService {
       }),
     );
   }
+
   private localModifyLike(data: ActionData, oldThreads: Thread[]) {
     return oldThreads.map((thread) => {
       if (thread.id === data.payload.threadId) {
