@@ -4,7 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { authGuard } from './auth/auth.guard';
 import { threadResolver } from './threads/thread.resolver';
 
-import { LayoutComponent } from './layout/layout.component';
+import { LayoutComponent } from './layouts/layout.component';
 import { ThreadsPageComponent } from './threads/components/threads-page/threads-page.component';
 import { AuthComponent } from './auth/auth.component';
 import { ThreadDetailsPageComponent } from './threads/components/thread-details-page/thread-details-page.component';

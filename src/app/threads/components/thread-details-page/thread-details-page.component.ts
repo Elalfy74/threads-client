@@ -8,13 +8,17 @@ import { AuthService } from 'src/app/auth/auth.service';
 
 import { ThreadWithReplies } from '../../interfaces/thread-with-replies.interface';
 import { NewReply } from 'src/app/replies/interfaces';
+import { ThreadItemComponent } from '../thread-item/thread-item.component';
+import { RepliesListComponent } from 'src/app/replies/components/replies-list/replies-list.component';
 
 @Component({
   templateUrl: './thread-details-page.component.html',
+  standalone: true,
+  imports: [ThreadItemComponent, RepliesListComponent],
 })
 export class ThreadDetailsPageComponent implements OnInit, OnDestroy {
   thread!: ThreadWithReplies;
-  currentUser: CurrentUser['user'] | null = null;
+  currentUser?: CurrentUser['user'];
   currentUserSub?: Subscription;
 
   constructor(
@@ -29,7 +33,7 @@ export class ThreadDetailsPageComponent implements OnInit, OnDestroy {
     });
 
     this.currentUserSub = this.authService.currentUser.subscribe((user) => {
-      this.currentUser = user?.user || null;
+      this.currentUser = user?.user;
     });
   }
 

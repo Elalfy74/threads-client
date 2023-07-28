@@ -1,14 +1,18 @@
 import { Component, Input } from '@angular/core';
 
 import { ThreadsService } from '../../threads.service';
+import { CommonModule } from '@angular/common';
+import { SpinnerComponent } from 'src/app/shared/spinner/spinner.component';
 
 @Component({
   selector: 'app-create-thread',
   templateUrl: './create-thread.component.html',
+  standalone: true,
+  imports: [CommonModule, SpinnerComponent],
 })
 export class CreateThreadComponent {
-  @Input() username!: string;
-  @Input() avatar!: string;
+  @Input() username?: string;
+  @Input() avatar?: string;
 
   content = '';
   previewImg = '';

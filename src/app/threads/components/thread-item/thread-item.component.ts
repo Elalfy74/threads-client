@@ -1,11 +1,16 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 import { Thread, ThreadWithReplies } from '../../interfaces';
+import { CommonModule } from '@angular/common';
+import { ReplyModalComponent } from 'src/app/replies/components/reply-modal/reply-modal.component';
+import { TimeAgoPipe } from 'src/app/shared/time-ago.pipe';
 
 @Component({
   selector: 'app-thread-item',
   templateUrl: './thread-item.component.html',
+  standalone: true,
+  imports: [CommonModule, RouterModule, ReplyModalComponent, TimeAgoPipe],
 })
 export class ThreadItemComponent {
   @Input() thread!: Thread | ThreadWithReplies;

@@ -2,10 +2,16 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { RepliesService } from '../../replies.service';
 import { Thread } from 'src/app/threads/interfaces';
+import { ModalComponent } from 'src/app/shared/modal/modal.component';
+import { CommonModule } from '@angular/common';
+import { SpinnerComponent } from 'src/app/shared/spinner/spinner.component';
+import { TimeAgoPipe } from 'src/app/shared/time-ago.pipe';
 
 @Component({
   selector: 'app-reply-modal',
   templateUrl: './reply-modal.component.html',
+  standalone: true,
+  imports: [CommonModule, ModalComponent, SpinnerComponent, TimeAgoPipe],
 })
 export class ReplyModalComponent {
   @Input() isVisible!: boolean;

@@ -1,3 +1,5 @@
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import {
   animate,
   state,
@@ -5,11 +7,13 @@ import {
   transition,
   trigger,
 } from '@angular/animations';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-modal',
   templateUrl: './modal.component.html',
+  standalone: true,
+  imports: [CommonModule],
+
   animations: [
     trigger('bg', [
       state(
