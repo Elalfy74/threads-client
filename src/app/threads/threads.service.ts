@@ -57,7 +57,7 @@ export class ThreadsService {
           this.localCreateThread(data.payload.newThread);
           break;
         case Actions.THREAD_CREATED_DONE:
-          newThreads = [data.payload.newThread, ...oldThreads];
+          newThreads = [data.payload.thread, ...oldThreads];
           break;
       }
 
@@ -99,30 +99,23 @@ export class ThreadsService {
   }
 
   private localCreateThread(newThread: NewThread) {
-    this.authService.currentUser
-      .pipe(
-        take(1),
-        map((user) => {
-          if (!user) return;
-
-          return new Thread(
-            newThread.id,
-            newThread.content,
-            newThread.createdAt,
-            newThread.imageUrl,
-            {
-              username: user.user.username,
-              avatar: user.user.avatar,
-            },
-          );
-        }),
-      )
-      .subscribe((newThread) =>
-        this.localModify({
-          action: Actions.THREAD_CREATED_DONE,
-          payload: { newThread: newThread! },
-        }),
+    this.authService.user.subscribe((user) => {
+      const thread = new Thread(
+        newThread.id,
+        newThread.content,
+        newThread.createdAt,
+        newThread.imageUrl,
+        {
+          username: user!.username,
+          avatar: user!.avatar,
+        },
       );
+
+      this.localModify({
+        action: Actions.THREAD_CREATED_DONE,
+        payload: { thread },
+      });
+    });
   }
 }
 
@@ -157,7 +150,7 @@ type THREAD_CREATED_DATA = {
 type THREAD_CREATED_DONE_DATA = {
   action: Actions.THREAD_CREATED_DONE;
   payload: {
-    newThread: Thread;
+    thread: Thread;
   };
 };
 
