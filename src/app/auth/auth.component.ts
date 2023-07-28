@@ -1,18 +1,19 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
+import { SpinnerComponent } from '../shared/spinner/spinner.component';
+
 import { AuthService } from './auth.service';
 import { AuthDto, CurrentUser } from './interfaces';
-import { CommonModule } from '@angular/common';
-import { SpinnerComponent } from '../shared/spinner/spinner.component';
 
 @Component({
   templateUrl: './auth.component.html',
   standalone: true,
-  imports: [SpinnerComponent, CommonModule, FormsModule, RouterModule],
+  imports: [CommonModule, FormsModule, RouterModule, SpinnerComponent],
 })
 export class AuthComponent {
   isLoginView = true;

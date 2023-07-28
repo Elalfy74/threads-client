@@ -1,11 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
+
+import { CreateThreadComponent } from '../create-thread/create-thread.component';
+import { ThreadsListComponent } from '../threads-list/threads-list.component';
 
 import { AuthService } from 'src/app/auth/auth.service';
 import { CurrentUser } from 'src/app/auth/interfaces';
-import { CreateThreadComponent } from '../create-thread/create-thread.component';
-import { ThreadsListComponent } from '../threads-list/threads-list.component';
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-threads-page',

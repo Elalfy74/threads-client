@@ -6,6 +6,6 @@ import { AsideNavComponent } from './aside-nav/aside-nav.component';
 @Component({
   templateUrl: './layout.component.html',
   standalone: true,
-  imports: [AsideNavComponent, RouterModule],
+  imports: [RouterModule, AsideNavComponent],
 })
 export class LayoutComponent {}

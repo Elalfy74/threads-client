@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, map, take, tap } from 'rxjs';
+import { BehaviorSubject, take, tap } from 'rxjs';
 
 import { AuthService } from '../auth/auth.service';
 import { NewThread, Thread } from './interfaces';

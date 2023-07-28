@@ -1,8 +1,9 @@
 import { Component, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
+import { ReplyItemComponent } from '../reply-item/reply-item.component';
 
 import { Reply } from '../../interfaces/reply.interface';
-import { ReplyItemComponent } from '../reply-item/reply-item.component';
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-replies-list',

@@ -1,11 +1,12 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
+import { ModalComponent } from 'src/app/shared/modal/modal.component';
+import { SpinnerComponent } from 'src/app/shared/spinner/spinner.component';
+import { TimeAgoPipe } from 'src/app/shared/time-ago.pipe';
 
 import { RepliesService } from '../../replies.service';
 import { Thread } from 'src/app/threads/interfaces';
-import { ModalComponent } from 'src/app/shared/modal/modal.component';
-import { CommonModule } from '@angular/common';
-import { SpinnerComponent } from 'src/app/shared/spinner/spinner.component';
-import { TimeAgoPipe } from 'src/app/shared/time-ago.pipe';
 
 @Component({
   selector: 'app-reply-modal',

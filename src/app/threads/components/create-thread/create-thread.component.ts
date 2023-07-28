@@ -1,8 +1,9 @@
 import { Component, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
+import { SpinnerComponent } from 'src/app/shared/spinner/spinner.component';
 
 import { ThreadsService } from '../../threads.service';
-import { CommonModule } from '@angular/common';
-import { SpinnerComponent } from 'src/app/shared/spinner/spinner.component';
 
 @Component({
   selector: 'app-create-thread',

@@ -2,14 +2,14 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 
-import { CurrentUser } from 'src/app/auth/interfaces';
-import { LikesService } from 'src/app/likes/likes.service';
-import { AuthService } from 'src/app/auth/auth.service';
-
-import { ThreadWithReplies } from '../../interfaces/thread-with-replies.interface';
-import { NewReply } from 'src/app/replies/interfaces';
 import { ThreadItemComponent } from '../thread-item/thread-item.component';
 import { RepliesListComponent } from 'src/app/replies/components/replies-list/replies-list.component';
+
+import { LikesService } from 'src/app/likes/likes.service';
+import { AuthService } from 'src/app/auth/auth.service';
+import { CurrentUser } from 'src/app/auth/interfaces';
+import { ThreadWithReplies } from '../../interfaces/thread-with-replies.interface';
+import { NewReply } from 'src/app/replies/interfaces';
 
 @Component({
   templateUrl: './thread-details-page.component.html',
