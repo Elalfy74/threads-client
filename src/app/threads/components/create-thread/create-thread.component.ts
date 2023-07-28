@@ -42,16 +42,19 @@ export class CreateThreadComponent {
   onAddThread() {
     this.isLoading = true;
 
-    this.threadsService
-      .create({
-        content: this.content,
-        imgFile: this.imgFile,
-      })
-      .subscribe(() => {
-        this.content = '';
-        this.imgFile = undefined;
-        this.previewImg = '';
-        this.isLoading = false;
-      });
+    const formData = new FormData();
+
+    formData.append('content', this.content);
+
+    if (this.imgFile) {
+      formData.append('file', this.imgFile);
+    }
+
+    this.threadsService.create(formData).subscribe(() => {
+      this.content = '';
+      this.imgFile = undefined;
+      this.previewImg = '';
+      this.isLoading = false;
+    });
   }
 }

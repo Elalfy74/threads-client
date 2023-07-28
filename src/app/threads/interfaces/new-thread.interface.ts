@@ -3,8 +3,5 @@ export interface NewThread {
   content: string;
   createdAt: Date;
   imageUrl: null | string;
-  user: {
-    username: string;
-    avatar: string;
-  };
+  userId: string;
 }

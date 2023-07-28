@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { exhaustMap } from 'rxjs';
+import { tap } from 'rxjs';
 
 import { Actions, ThreadsService } from '../threads/threads.service';
 import { NewReply } from './interfaces';
@@ -20,7 +20,7 @@ export class RepliesService {
     return this.http
       .post<NewReply>(`${this.url}`, { postId: threadId, content })
       .pipe(
-        exhaustMap((reply) =>
+        tap((reply) =>
           this.threadsService.localModify({
             action: Actions.REPLY_CREATED,
             payload: {

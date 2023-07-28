@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { exhaustMap } from 'rxjs';
+import { tap } from 'rxjs';
 
 import { Actions, ThreadsService } from '../threads/threads.service';
 
@@ -17,7 +17,7 @@ export class LikesService {
 
   create(threadId: string) {
     return this.http.post(`${this.url}`, { postId: threadId }).pipe(
-      exhaustMap(() =>
+      tap(() =>
         this.threadsService.localModify({
           action: Actions.LIKE_CREATED,
           payload: {
@@ -30,7 +30,7 @@ export class LikesService {
 
   remove(threadId: string) {
     return this.http.delete(`${this.url}/${threadId}`).pipe(
-      exhaustMap(() =>
+      tap(() =>
         this.threadsService.localModify({
           action: Actions.LIKE_REMOVED,
           payload: {
