@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { BehaviorSubject, throwError } from 'rxjs';
-import { catchError, take, tap } from 'rxjs/operators';
+import { catchError, map, take, tap } from 'rxjs/operators';
 
 import { CurrentUser, AuthDto } from './interfaces';
 
@@ -15,6 +15,13 @@ export class AuthService {
     private http: HttpClient,
     private router: Router,
   ) {}
+
+  get user() {
+    return this.currentUser.pipe(
+      take(1),
+      map((currentUser) => currentUser?.user),
+    );
+  }
 
   register(dto: AuthDto) {
     return this.http.post<CurrentUser>(`${this.url}/register`, dto).pipe(
