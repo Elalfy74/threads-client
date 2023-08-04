@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 import { AuthService } from 'src/app/auth/auth.service';
@@ -7,6 +7,8 @@ import { AuthService } from 'src/app/auth/auth.service';
 @Component({
   selector: 'app-aside-nav',
   templateUrl: './aside-nav.component.html',
+  standalone: true,
+  imports: [RouterModule],
 })
 export class AsideNavComponent implements OnInit, OnDestroy {
   isAuth = false;

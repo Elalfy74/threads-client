@@ -6,20 +6,25 @@ import {
   OnInit,
   SimpleChanges,
 } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
 
-import { LikesService } from 'src/app/likes/likes.service';
-import { CurrentUser } from 'src/app/auth/interfaces';
+import { ThreadItemComponent } from '../thread-item/thread-item.component';
+import { SpinnerComponent } from 'src/app/shared/spinner/spinner.component';
 
+import { LikesService } from 'src/app/likes/likes.service';
 import { ThreadsService } from '../../threads.service';
+import { CurrentUser } from 'src/app/auth/interfaces';
 import { Thread } from '../../interfaces';
 
 @Component({
   selector: 'app-threads-list',
   templateUrl: './threads-list.component.html',
+  standalone: true,
+  imports: [CommonModule, ThreadItemComponent, SpinnerComponent],
 })
 export class ThreadsListComponent implements OnInit, OnDestroy, OnChanges {
-  @Input() currentUser!: CurrentUser['user'] | null;
+  @Input() currentUser?: CurrentUser['user'];
   threads: Thread[] = [];
   threadsSub?: Subscription;
   isLoading = false;
