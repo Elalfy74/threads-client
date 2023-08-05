@@ -11,7 +11,7 @@ import { Injectable } from '@angular/core';
 import { AuthService } from './auth.service';
 
 @Injectable()
-export class ReIssueToken implements HttpInterceptor {
+export class ReIssueTokenInterceptor implements HttpInterceptor {
   constructor(private authService: AuthService) {}
 
   intercept(

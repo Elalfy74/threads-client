@@ -54,12 +54,12 @@
       </label>
 
       <button
-        [disabled]="!content || isLoading"
+        [disabled]="!content || (isLoading$ | async)"
         (click)="onAddThread()"
         class="flex items-center justify-center text-lg font-bold text-blue-500 disabled:text-gray-500 disabled:cursor-not-allowed"
       >
-        <span *ngIf="!isLoading">Post</span>
-        <app-spinner *ngIf="isLoading"></app-spinner>
+        <span *ngIf="!(isLoading$ | async)">Post</span>
+        <app-spinner *ngIf="isLoading$ | async"></app-spinner>
       </button>
     </div>
   </div>

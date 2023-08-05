@@ -1,21 +1,21 @@
-import {
-  Component,
-  Input,
-  OnChanges,
-  OnDestroy,
-  OnInit,
-  SimpleChanges,
-} from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Subscription } from 'rxjs';
+import { Store } from '@ngrx/store';
 
 import { ThreadItemComponent } from '../thread-item/thread-item.component';
 import { SpinnerComponent } from 'src/app/shared/spinner/spinner.component';
 
 import { LikesService } from 'src/app/likes/likes.service';
-import { ThreadsService } from '../../threads.service';
+
 import { CurrentUser } from 'src/app/auth/interfaces';
 import { Thread } from '../../interfaces';
+
+import {
+  selectAllThreads,
+  selectLoadStatus,
+} from '../../store/threads.selectors';
+import { ThreadsState } from '../../store/threads.reducer';
+import { loadThreadsStart } from '../../store/threads.actions';
 
 @Component({
   selector: 'app-threads-list',
@@ -23,36 +23,19 @@ import { Thread } from '../../interfaces';
   standalone: true,
   imports: [CommonModule, ThreadItemComponent, SpinnerComponent],
 })
-export class ThreadsListComponent implements OnInit, OnDestroy, OnChanges {
+export class ThreadsListComponent implements OnChanges {
   @Input() currentUser?: CurrentUser['user'];
-  threads: Thread[] = [];
-  threadsSub?: Subscription;
-  isLoading = false;
+
+  public threads$ = this.store.select(selectAllThreads);
+  public isLoading$ = this.store.select(selectLoadStatus);
 
   constructor(
-    private threadsService: ThreadsService,
+    private store: Store<{ threads: ThreadsState }>,
     private likesService: LikesService,
   ) {}
 
-  ngOnInit(): void {
-    this.isLoading = true;
-    this.threadsService.find().subscribe(() => {
-      this.isLoading = false;
-    });
-
-    this.threadsSub = this.threadsService.threads.subscribe((resData) => {
-      this.threads = resData;
-    });
-  }
-
-  ngOnDestroy(): void {
-    this.threadsSub?.unsubscribe();
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (this.threads.length > 0) {
-      this.threadsService.find().subscribe(() => {});
-    }
+  ngOnChanges(): void {
+    this.store.dispatch(loadThreadsStart());
   }
 
   handleLike({ id, userHasLiked }: Thread) {
