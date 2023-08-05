@@ -7,15 +7,23 @@ import { AppComponent } from './app/app.component';
 
 import { AppRoutingModule } from './app/app-routing.module';
 
-import { ReIssueToken } from './app/auth/re-issue-token.interceptor';
+// Interceptors
+import { ReIssueTokenInterceptor } from './app/auth/re-issue-token.interceptor';
 import { TokenAndUrlInterceptor } from './app/shared/token-url.interceptor';
+
+// NgRx
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { threadsReducer } from './app/threads/store/threads.reducer';
+import { ThreadsEffects } from './app/threads/store/threads.effects';
 
 bootstrapApplication(AppComponent, {
   providers: [
     importProvidersFrom(HttpClientModule),
     importProvidersFrom(AppRoutingModule),
     importProvidersFrom(BrowserAnimationsModule),
-
+    importProvidersFrom(StoreModule.forRoot({ threads: threadsReducer })),
+    importProvidersFrom(EffectsModule.forRoot([ThreadsEffects])),
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenAndUrlInterceptor,
@@ -23,7 +31,7 @@ bootstrapApplication(AppComponent, {
     },
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: ReIssueToken,
+      useClass: ReIssueTokenInterceptor,
       multi: true,
     },
   ],

@@ -1,27 +1,19 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, take, tap } from 'rxjs';
 
-import { AuthService } from '../auth/auth.service';
 import { NewThread, Thread } from './interfaces';
-import { NewReply } from '../replies/interfaces';
+import { CurrentUser } from '../auth/interfaces';
+
+import { removeLikeFromThread, addLikeToThread } from './store/threads.actions';
 
 @Injectable({ providedIn: 'root' })
 export class ThreadsService {
-  threads = new BehaviorSubject<Thread[]>([]);
   private url = 'posts';
 
-  constructor(
-    private http: HttpClient,
-    private authService: AuthService,
-  ) {}
+  constructor(private http: HttpClient) {}
 
   find() {
-    return this.http.get<Thread[]>(`${this.url}`).pipe(
-      tap((resData) => {
-        this.threads.next(resData);
-      }),
-    );
+    return this.http.get<Thread[]>(`${this.url}`);
   }
 
   findOne(threadId: string) {
@@ -29,53 +21,27 @@ export class ThreadsService {
   }
 
   create(formData: FormData) {
-    return this.http.post<NewThread>(`${this.url}`, formData).pipe(
-      tap((newThread) =>
-        this.localModify({
-          action: Actions.THREAD_CREATED,
-          payload: {
-            newThread,
-          },
-        }),
-      ),
+    return this.http.post<NewThread>(`${this.url}`, formData);
+  }
+
+  localCreateThread(newThread: NewThread, user: CurrentUser['user']) {
+    return new Thread(
+      newThread.id,
+      newThread.content,
+      newThread.createdAt,
+      newThread.imageUrl,
+      {
+        username: user.username,
+        avatar: user.avatar,
+      },
     );
   }
 
-  localModify(data: ActionData) {
-    this.threads.pipe(take(1)).subscribe((oldThreads) => {
-      let newThreads: Thread[] | undefined;
-
-      switch (data.action) {
-        case Actions.LIKE_CREATED:
-        case Actions.LIKE_REMOVED:
-          newThreads = this.localModifyLike(data, oldThreads);
-          break;
-        case Actions.REPLY_CREATED:
-          newThreads = this.localModifyReply(data, oldThreads);
-          break;
-        case Actions.THREAD_CREATED:
-          this.localCreateThread(data.payload.newThread);
-          break;
-        case Actions.THREAD_CREATED_DONE:
-          newThreads = [data.payload.thread, ...oldThreads];
-          break;
-      }
-
-      if (newThreads) {
-        this.threads.next(newThreads);
-      }
-    });
-    if (data.action === Actions.REPLY_CREATED) {
-      return data.payload.reply;
-    }
-    return null;
-  }
-
-  private localModifyLike(data: LIKE_MODIFIED_DATA, oldThreads: Thread[]) {
+  localModifyLike(data: LIKE_MODIFIED_DATA, oldThreads: Thread[]) {
     return oldThreads.map((thread) => {
       if (thread.id === data.payload.threadId) {
         const newLikesCount =
-          data.action === Actions.LIKE_CREATED
+          data.action === addLikeToThread['type']
             ? thread.likesCount + 1
             : thread.likesCount - 1;
 
@@ -89,73 +55,19 @@ export class ThreadsService {
     });
   }
 
-  private localModifyReply(data: REPLY_CREATED_DATA, oldThreads: Thread[]) {
+  localModifyReply(threadId: string, oldThreads: Thread[]) {
     return oldThreads.map((thread) => {
-      if (thread.id === data.payload.threadId) {
+      if (thread.id === threadId) {
         return { ...thread, repliesCount: thread.repliesCount + 1 };
       }
       return thread;
     });
   }
-
-  private localCreateThread(newThread: NewThread) {
-    this.authService.user.subscribe((user) => {
-      const thread = new Thread(
-        newThread.id,
-        newThread.content,
-        newThread.createdAt,
-        newThread.imageUrl,
-        {
-          username: user!.username,
-          avatar: user!.avatar,
-        },
-      );
-
-      this.localModify({
-        action: Actions.THREAD_CREATED_DONE,
-        payload: { thread },
-      });
-    });
-  }
-}
-
-export enum Actions {
-  LIKE_CREATED = 'LIKE_CREATED',
-  LIKE_REMOVED = 'LIKE_REMOVED',
-  REPLY_CREATED = 'REPLY_CREATED',
-  THREAD_CREATED = 'THREAD_CREATED',
-  THREAD_CREATED_DONE = 'THREAD_CREATED_DONE',
 }
 
 type LIKE_MODIFIED_DATA = {
-  action: Actions.LIKE_CREATED | Actions.LIKE_REMOVED;
+  action:
+    | (typeof addLikeToThread)['type']
+    | (typeof removeLikeFromThread)['type'];
   payload: { threadId: string };
 };
-
-type REPLY_CREATED_DATA = {
-  action: Actions.REPLY_CREATED;
-  payload: {
-    threadId: string;
-    reply: NewReply;
-  };
-};
-
-type THREAD_CREATED_DATA = {
-  action: Actions.THREAD_CREATED;
-  payload: {
-    newThread: NewThread;
-  };
-};
-
-type THREAD_CREATED_DONE_DATA = {
-  action: Actions.THREAD_CREATED_DONE;
-  payload: {
-    thread: Thread;
-  };
-};
-
-type ActionData =
-  | LIKE_MODIFIED_DATA
-  | REPLY_CREATED_DATA
-  | THREAD_CREATED_DATA
-  | THREAD_CREATED_DONE_DATA;

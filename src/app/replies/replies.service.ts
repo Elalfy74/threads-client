@@ -2,8 +2,10 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { tap } from 'rxjs';
 
-import { Actions, ThreadsService } from '../threads/threads.service';
 import { NewReply } from './interfaces';
+import { Store } from '@ngrx/store';
+import { Thread } from '../threads/interfaces';
+import { addReplyToThread } from '../threads/store/threads.actions';
 
 @Injectable({
   providedIn: 'root',
@@ -13,23 +15,16 @@ export class RepliesService {
 
   constructor(
     private http: HttpClient,
-    private threadsService: ThreadsService,
+    private store: Store<{ threads: Thread[] }>,
   ) {}
 
   create(threadId: string, content: string) {
     return this.http
-      .post<NewReply>(`${this.url}`, { postId: threadId, content })
-      .pipe(
-        tap((reply) =>
-          this.threadsService.localModify({
-            action: Actions.REPLY_CREATED,
-            payload: {
-              threadId,
-              reply,
-            },
-          }),
-        ),
-      );
+      .post<NewReply>(`${this.url}`, {
+        postId: threadId,
+        content,
+      })
+      .pipe(tap(() => this.store.dispatch(addReplyToThread({ threadId }))));
   }
 
   find(threadId: string) {
