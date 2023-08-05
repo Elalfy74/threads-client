@@ -1,7 +1,9 @@
-<div *ngIf="isLoading$ | async" class="mt-20 text-center">
-  <app-spinner color="white" size="normal"></app-spinner>
-</div>
-<ul *ngIf="!(isLoading$ | async)">
+<ul
+  infiniteScroll
+  [infiniteScrollDistance]="2"
+  [infiniteScrollThrottle]="500"
+  (scrolled)="onScroll()"
+>
   <li *ngFor="let thread of threads$ | async">
     <app-thread-item
       [thread]="thread"
@@ -12,3 +14,7 @@
     </app-thread-item>
   </li>
 </ul>
+
+<div *ngIf="isLoading$ | async" class="my-20 text-center">
+  <app-spinner color="white" size="normal"></app-spinner>
+</div>

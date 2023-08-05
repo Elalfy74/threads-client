@@ -5,6 +5,8 @@ import { Thread } from '../interfaces';
 import {
   addThreadStart,
   addThreadSuccess,
+  appendThreadsStart,
+  appendThreadsSuccess,
   loadThreadsStart,
   loadThreadsSuccess,
 } from './threads.actions';
@@ -43,6 +45,14 @@ export const threadsReducer = createReducer(
     ...state,
     threads,
     error: undefined,
+    loadStatus: false,
+  })),
+
+  on(appendThreadsStart, (state) => ({ ...state, loadStatus: true })),
+
+  on(appendThreadsSuccess, (state, { threads }) => ({
+    ...state,
+    threads: [...state.threads, ...threads],
     loadStatus: false,
   })),
 );

@@ -12,8 +12,13 @@ export class ThreadsService {
 
   constructor(private http: HttpClient) {}
 
-  find() {
-    return this.http.get<Thread[]>(`${this.url}`);
+  find(page: number = 1, itemsPerPage: number = 10) {
+    return this.http.get<Thread[]>(`${this.url}`, {
+      params: {
+        page,
+        itemsPerPage,
+      },
+    });
   }
 
   findOne(threadId: string) {

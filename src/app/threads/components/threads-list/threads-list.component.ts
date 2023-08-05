@@ -15,15 +15,27 @@ import {
   selectLoadStatus,
 } from '../../store/threads.selectors';
 import { ThreadsState } from '../../store/threads.reducer';
-import { loadThreadsStart } from '../../store/threads.actions';
+import {
+  appendThreadsStart,
+  loadThreadsStart,
+} from '../../store/threads.actions';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 @Component({
   selector: 'app-threads-list',
   templateUrl: './threads-list.component.html',
   standalone: true,
-  imports: [CommonModule, ThreadItemComponent, SpinnerComponent],
+  imports: [
+    CommonModule,
+    InfiniteScrollModule,
+    ThreadItemComponent,
+    SpinnerComponent,
+  ],
 })
 export class ThreadsListComponent implements OnChanges {
+  page = 1;
+  itemsPerPage = 10;
+
   @Input() currentUser?: CurrentUser['user'];
 
   public threads$ = this.store.select(selectAllThreads);
@@ -37,6 +49,13 @@ export class ThreadsListComponent implements OnChanges {
   ngOnChanges(): void {
     this.store.dispatch(loadThreadsStart());
   }
+
+  onScroll = () => {
+    this.page++;
+    this.store.dispatch(
+      appendThreadsStart({ page: this.page, itemsPerPage: this.itemsPerPage }),
+    );
+  };
 
   handleLike({ id, userHasLiked }: Thread) {
     if (!userHasLiked) {

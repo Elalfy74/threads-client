@@ -32,3 +32,13 @@ export const loadThreadsSuccess = createAction(
   '[Threads] Load Threads Success',
   props<{ threads: Thread[] }>(),
 );
+
+export const appendThreadsStart = createAction(
+  '[Threads] Append Threads Start',
+  props<{ page: number; itemsPerPage: number }>(),
+);
+
+export const appendThreadsSuccess = createAction(
+  '[Threads] Append Threads Success',
+  props<{ threads: Thread[] }>(),
+);

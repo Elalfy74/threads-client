@@ -15,6 +15,8 @@ import {
   loadThreadsStart,
   loadThreadsSuccess,
   addReplyToThread,
+  appendThreadsStart,
+  appendThreadsSuccess,
 } from './threads.actions';
 
 import { selectAllThreads } from './threads.selectors';
@@ -35,6 +37,17 @@ export class ThreadsEffects {
         this.threadsService
           .find()
           .pipe(map((threads) => loadThreadsSuccess({ threads }))),
+      ),
+    ),
+  );
+
+  appendThreads$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(appendThreadsStart),
+      exhaustMap(({ page, itemsPerPage }) =>
+        this.threadsService
+          .find(page, itemsPerPage)
+          .pipe(map((threads) => appendThreadsSuccess({ threads }))),
       ),
     ),
   );
