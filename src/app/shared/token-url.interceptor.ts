@@ -21,7 +21,7 @@ export class TokenAndUrlInterceptor implements HttpInterceptor {
       take(1),
       exhaustMap((user) => {
         const modifiedReq = req.clone({
-          url: `http://localhost:3000/api/${req.url}`,
+          url: `https://threads-api-x3h5.onrender.com/api/${req.url}`,
           withCredentials: true,
           headers: req.headers.append(
             'Authorization',
