@@ -6,6 +6,7 @@ import {
   HttpRequest,
 } from '@angular/common/http';
 import { Observable, exhaustMap, take } from 'rxjs';
+import { environment } from './../../environments/environment';
 
 import { AuthService } from '../auth/auth.service';
 
@@ -21,7 +22,7 @@ export class TokenAndUrlInterceptor implements HttpInterceptor {
       take(1),
       exhaustMap((user) => {
         const modifiedReq = req.clone({
-          url: `http://localhost:3000/api/${req.url}`,
+          url: `${environment.url}/api/${req.url}`,
           withCredentials: true,
           headers: req.headers.append(
             'Authorization',
